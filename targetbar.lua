@@ -255,7 +255,7 @@ targetbar.DrawWindow = function(settings)
 			buffIds = player:GetBuffs();
 		elseif (IsMemberOfParty(targetIndex)) then
 			buffIds = statusHandler.get_member_status(playerTarget:GetServerId(0));
-		else
+		elseif (isMonster) then
 			buffIds, buffTimes = debuffHandler.GetActiveDebuffs(playerTarget:GetServerId(0));
 		end
 		imgui.NewLine();
