@@ -16,7 +16,6 @@ local arrowTexture;
 local percentText;
 local nameText;
 local totNameText;
-local distText;
 local targetbar = {
 	interpolation = {}
 };
@@ -25,7 +24,6 @@ local function UpdateTextVisibility(visible)
 	percentText:SetVisible(visible);
 	nameText:SetVisible(visible);
 	totNameText:SetVisible(visible);
-	distText:SetVisible(visible);
 end
 
 local _HXUI_DEV_DEBUG_INTERPOLATION = false;
@@ -52,7 +50,13 @@ targetbar.DrawWindow = function(settings)
 	end
     if (targetEntity == nil or targetEntity.Name == nil) then
 		UpdateTextVisibility(false);
-
+        for i=1,32 do
+            local textObjName = "debuffText" .. tostring(i)
+            textObj = debuffTable[textObjName]
+            if textObj then
+                textObj:SetVisible(false)
+            end
+        end
 		targetbar.interpolation.interpolationDamagePercent = 0;
 
         return;
@@ -180,7 +184,6 @@ targetbar.DrawWindow = function(settings)
     if (imgui.Begin('TargetBar', true, windowFlags)) then
         
 		-- Obtain and prepare target information..
-        local dist  = ('%.1f'):fmt(math.sqrt(targetEntity.Distance));
 		local targetNameText = targetEntity.Name;
 		local targetHpPercent = targetEntity.HPPercent..'%';
 
@@ -232,14 +235,6 @@ targetbar.DrawWindow = function(settings)
 		nameText:SetText(targetNameText);
 		nameText:SetVisible(true);
 
-		local distSize = SIZE.new();
-		distText:GetTextSize(distSize);
-
-		distText:SetPositionX(startX + settings.barWidth - settings.barHeight / 2 - settings.topTextXOffset);
-		distText:SetPositionY(startY - settings.topTextYOffset - distSize.cy);
-		distText:SetText(tostring(dist));
-		distText:SetVisible(true);
-
 		if (isMonster or gConfig.alwaysShowHealthPercent) then
 			percentText:SetPositionX(startX + settings.barWidth - settings.barHeight / 2 - settings.bottomTextXOffset);
 			percentText:SetPositionY(startY + settings.barHeight + settings.bottomTextYOffset);
@@ -255,16 +250,24 @@ targetbar.DrawWindow = function(settings)
 		imgui.SameLine();
 		local preBuffX, preBuffY = imgui.GetCursorScreenPos();
 		local buffIds;
+        local buffTimes = nil;
 		if (targetEntity == playerEnt) then
 			buffIds = player:GetBuffs();
 		elseif (IsMemberOfParty(targetIndex)) then
 			buffIds = statusHandler.get_member_status(playerTarget:GetServerId(0));
 		else
-			buffIds = debuffHandler.GetActiveDebuffs(playerTarget:GetServerId(0));
+			buffIds, buffTimes = debuffHandler.GetActiveDebuffs(playerTarget:GetServerId(0));
 		end
 		imgui.NewLine();
 		imgui.PushStyleVar(ImGuiStyleVar_ItemSpacing, {1, 3});
-		DrawStatusIcons(buffIds, settings.iconSize, settings.maxIconColumns, 3, false, settings.barHeight/2);
+        for i=1,32 do
+            local textObjName = "debuffText" .. tostring(i)
+            textObj = debuffTable[textObjName]
+            if textObj then
+                textObj:SetVisible(false)
+            end
+        end
+		DrawStatusIcons(buffIds, settings.iconSize, settings.maxIconColumns, 3, false, settings.barHeight/2, buffTimes, settings.distance_font_settings);
 		imgui.PopStyleVar(1);
 
 		-- Obtain our target of target (not always accurate)
@@ -315,14 +318,12 @@ targetbar.Initialize = function(settings)
     percentText = fonts.new(settings.percent_font_settings);
 	nameText = fonts.new(settings.name_font_settings);
 	totNameText = fonts.new(settings.totName_font_settings);
-	distText = fonts.new(settings.distance_font_settings);
 	arrowTexture = 	LoadTexture("arrow");
 end
 
 targetbar.UpdateFonts = function(settings)
     percentText:SetFontHeight(settings.percent_font_settings.font_height);
 	nameText:SetFontHeight(settings.name_font_settings.font_height);
-	distText:SetFontHeight(settings.distance_font_settings.font_height);
 	totNameText:SetFontHeight(settings.totName_font_settings.font_height);
 end
 
@@ -331,7 +332,5 @@ targetbar.SetHidden = function(hidden)
 		UpdateTextVisibility(false);
 	end
 end
-
-
 
 return targetbar;
