@@ -77,9 +77,9 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 120
                 elseif spell == 59 or spell == 359 then -- silence/ga
                     debuffs[target.Id][buffId] = now + 120
-                elseif spell == 253 or spell == 273 then -- sleep/ga
+                elseif spell == 253 or spell == 273 or spell == 363 then -- sleep/ga
                     debuffs[target.Id][buffId] = now + 60
-                elseif spell == 259 or spell == 274 then -- sleep2/ga2
+                elseif spell == 259 or spell == 274 or spell == 364 then -- sleep2/ga2
                     debuffs[target.Id][buffId] = now + 90
                 elseif spell == 376 or spell == 463 then -- Foe/Horde Lullaby
                     debuffs[target.Id][buffId] = now + 36
@@ -98,7 +98,7 @@ local function ApplyMessage(debuffs, action)
                 elseif spell == 422 or spell == 421 then -- elegies
                     debuffs[target.Id][buffId] = now + 216
                 else -- Handle unknown status effect @ 5 minutes
-                    debuffs[target.Id][buffId] = now + 300;
+                    debuffs[target.Id][buffId] = now + 180;
                 end
             end
         end
