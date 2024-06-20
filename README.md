@@ -9,4 +9,4 @@ This fork:
 - Fixes the timers for multiple debuffs as these were all wrong.
 - Cleans up the display of the debuff timers from ConteAlmaviva's fork so it actually looks nice.
 - Replaces the HP text on the Enemy List with Distance.
-- 
+
