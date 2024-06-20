@@ -67,6 +67,10 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 120
                 elseif spell == 254 or spell == 276 then -- blind/blind2
                     debuffs[target.Id][buffId] = now + 180
+                elseif spell == 341 or spell == 344 or spell == 347 then -- ninjutsu debuffs: ichi
+                    debuffs[target.Id][buffId] = now + 180
+                elseif spell == 342 or spell == 345 or spell == 348 then -- ninjutsu debuffs: ni
+                    debuffs[target.Id][buffId] = now + 300
                 elseif spell == 23 then -- dia
                     debuffs[target.Id][buffId] = now + 60
                 elseif spell == 24 then -- dia2
@@ -92,13 +96,13 @@ local function ApplyMessage(debuffs, action)
                 elseif spell == 221 then -- poison2
                     debuffs[target.Id][buffId] = now + 120
                 elseif spell >= 235 and spell <= 240 then -- elemental debuffs
-                    debuffs[target.Id][buffId] = now + 90
+                    debuffs[target.Id][buffId] = now + 120
                 elseif spell >= 454 and spell <= 461 then -- threnodies
                     debuffs[target.Id][buffId] = now + 78
                 elseif spell == 422 or spell == 421 then -- elegies
                     debuffs[target.Id][buffId] = now + 216
                 else -- Handle unknown status effect @ 5 minutes
-                    debuffs[target.Id][buffId] = now + 180;
+                    debuffs[target.Id][buffId] = now + 300;
                 end
             end
         end
