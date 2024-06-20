@@ -92,9 +92,9 @@ enemylist.DrawWindow = function(settings)
 
 					-- Display the targets information..
 					imgui.TextColored(color, targetNameText);
-					local percentText  = ('%.f'):fmt(ent.HPPercent);
+					local percentText  = ('%.1f'):fmt(math.sqrt(ent.Distance));
 					local x, _  = imgui.CalcTextSize(percentText);
-					local fauxX, _  = imgui.CalcTextSize('100');
+					local fauxX, _  = imgui.CalcTextSize('1000');
 
 					-- Draw buffs and debuffs
 					local buffIds = debuffHandler.GetActiveDebuffs(AshitaCore:GetMemoryManager():GetEntity():GetServerId(k));
