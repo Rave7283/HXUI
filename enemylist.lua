@@ -6,8 +6,8 @@ local statusHandler = require('statushandler');
 local progressbar = require('progressbar');
 
 -- TODO: Calculate these instead of manually setting them
-local bgAlpha = 0.4;
-local bgRadius = 3;
+local bgAlpha = 0.6;
+local bgRadius = 1;
 local allClaimedTargets = {};
 local enemylist = {};
 
@@ -60,10 +60,10 @@ enemylist.DrawWindow = function(settings)
 		local numTargets = 0;
 		for k,v in pairs(allClaimedTargets) do
 			local ent = GetEntity(k);
-			if (v ~= nil and ent ~= nil and GetIsValidMob(k)) then
+            if (v ~= nil and ent ~= nil and GetIsValidMob(k) and ent.HPPercent > 0 and ent.Name ~= nil) then
 				-- Obtain and prepare target information..
 				local targetNameText = ent.Name;
-				if (targetNameText ~= nil) then
+				-- if (targetNameText ~= nil) then
 
 					local color = GetColorOfTargetRGBA(ent, k);
 					imgui.Dummy({0,settings.entrySpacing});
@@ -81,8 +81,8 @@ enemylist.DrawWindow = function(settings)
 						yDist = yDist + settings.barHeight;
 					end
 
-					draw_rect({winX + cornerOffset , winY + cornerOffset}, {winX + rectLength, winY + yDist + settings.bgPadding}, {0,0,0,bgAlpha}, bgRadius, true);
-
+					draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, color, bgRadius, false);
+					
 					-- Draw outlines for our target and subtarget
 					if (subTargetIndex ~= nil and k == subTargetIndex) then
 						draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {.5,.5,1,1}, bgRadius, false);
@@ -92,9 +92,9 @@ enemylist.DrawWindow = function(settings)
 
 					-- Display the targets information..
 					imgui.TextColored(color, targetNameText);
-					local percentText  = ('%.1f'):fmt(math.sqrt(ent.Distance));
+					local percentText  = ('%.f'):fmt(ent.HPPercent);
 					local x, _  = imgui.CalcTextSize(percentText);
-					local fauxX, _  = imgui.CalcTextSize('1000');
+					local fauxX, _  = imgui.CalcTextSize('100');
 
 					-- Draw buffs and debuffs
 					local buffIds = debuffHandler.GetActiveDebuffs(AshitaCore:GetMemoryManager():GetEntity():GetServerId(k));
@@ -108,6 +108,16 @@ enemylist.DrawWindow = function(settings)
 						imgui.End();
 					end
 
+					--Distance
+					local distanceText = ('%.1f'):fmt(math.sqrt(ent.Distance));
+					
+					imgui.SetNextWindowPos({winStartX - 43, winY});
+					imgui.Begin('EnemyDistance'..k, true, bit.bor(ImGuiWindowFlags_NoDecoration, ImGuiWindowFlags_AlwaysAutoResize, ImGuiWindowFlags_NoFocusOnAppearing, ImGuiWindowFlags_NoNav, ImGuiWindowFlags_NoBackground, ImGuiWindowFlags_NoSavedSettings))
+					imgui.SetWindowFontScale(1.3)
+					imgui.Text(distanceText);
+					imgui.End(); 
+					
+					--HP Percent
 					imgui.SetCursorPosX(imgui.GetCursorPosX() + fauxX - x);
 					imgui.Text(percentText);
 					imgui.SameLine();
@@ -122,7 +132,7 @@ enemylist.DrawWindow = function(settings)
 					if (numTargets >= gConfig.maxEnemyListEntries) then
 						break;
 					end
-				end
+				-- end
 			else
 				allClaimedTargets[k] = nil;
 			end
