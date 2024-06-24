@@ -192,9 +192,9 @@ targetbar.DrawWindow = function(settings)
 
 		if (gConfig.showEnemyId and isMonster) then
 			local targetServerId = AshitaCore:GetMemoryManager():GetEntity():GetServerId(targetIndex);
-			local targetServerIdHex = string.format('0x%X', targetServerId);
+			--local targetServerIdHex = string.format('0x%X', targetServerId);
 
-			targetNameText = targetNameText .. " [".. string.sub(targetServerIdHex, -3) .."]";
+			targetNameText = targetNameText .. " [".. string.sub(targetServerId, -3) .."]";
 		end
 
 		local hpGradientStart = '#e26c6c';
