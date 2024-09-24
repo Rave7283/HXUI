@@ -66,6 +66,7 @@ local function GetMemberInformation(memIdx)
         memberInfo.job = party:GetMemberMainJob(memIdx);
         memberInfo.level = party:GetMemberMainJobLevel(memIdx);
         memberInfo.serverid = party:GetMemberServerId(memIdx);
+        memberInfo.index = party:GetMemberTargetIndex(memIdx);
         if (playerTarget ~= nil) then
             local t1, t2 = GetTargets();
             local sActive = GetSubTargetActive();
@@ -98,6 +99,7 @@ local function GetMemberInformation(memIdx)
         memberInfo.buffs = nil;
         memberInfo.sync = false;
         memberInfo.subTargeted = false;
+        memberInfo.index = nil;
     end
 
     return memberInfo;
@@ -159,10 +161,19 @@ local function DrawMember(memIdx, settings)
     end
 
     -- Update the name text
+    local distanceText = ''
+    if (memInfo.inzone and memInfo.index) then
+        local entity = AshitaCore:GetMemoryManager():GetEntity()
+        local distance = math.sqrt(entity:GetDistance(memInfo.index))
+        if (distance > 0 and distance <= 50) then
+            local percentText  = ('%.1f'):fmt(distance);
+            distanceText = ' - ' .. percentText
+        end
+    end
     memberText[memIdx].name:SetColor(0xFFFFFFFF);
     memberText[memIdx].name:SetPositionX(namePosX);
     memberText[memIdx].name:SetPositionY(hpStartY - nameSize.cy - settings.nameTextOffsetY);
-    memberText[memIdx].name:SetText(tostring(memInfo.name));
+    memberText[memIdx].name:SetText(tostring(memInfo.name) .. distanceText);
 
     local nameSize = SIZE.new();
     memberText[0].name:GetTextSize(nameSize);
