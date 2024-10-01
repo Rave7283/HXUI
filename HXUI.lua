@@ -131,6 +131,7 @@ T{
 	targetBarScaleY = 1,
 	targetBarFontOffset = 0,
 	targetBarIconScale = 1,
+	showTargetDistance = true,
 	showTargetBarBookends = true,
 	showEnemyId = false;
 	alwaysShowHealthPercent = false,
@@ -139,6 +140,8 @@ T{
 	enemyListScaleY = 1,
 	enemyListFontScale = 1,
 	enemyListIconScale = 1,
+	showEnemyDistance = false,
+	showEnemyHPPText = true,
 	showEnemyListBookends = true,
 
 	expBarScaleX = 1,
@@ -160,6 +163,7 @@ T{
 	partyListTheme = 0, 
 	partyListBgOpacity = 200;
 	showPartyListBookends = true,
+	showPartyListDistance = false,
 	partyListCursor = 'GreyArrow.png',
 	partyListBackground = 'BlueGradient.png',
 	partyListEntrySpacing = 0,
@@ -243,7 +247,7 @@ T{
 		};
 		distance_font_settings = 
 		T{
-			visible = true,
+			visible = false,
 			locked = true,
 			font_family = 'Consolas',
 			font_height = 11,

@@ -125,6 +125,10 @@ config.DrawWindow = function(us)
                 gConfig.showTargetBar = not gConfig.showTargetBar;
                 UpdateSettings();
             end
+            if (imgui.Checkbox('Show Distance', { gConfig.showTargetDistance })) then
+                gConfig.showTargetDistance = not gConfig.showTargetDistance;
+                UpdateSettings();
+            end
             if (imgui.Checkbox('Show Bookends', { gConfig.showTargetBarBookends })) then
                 gConfig.showTargetBarBookends = not gConfig.showTargetBarBookends;
                 UpdateSettings();
@@ -167,6 +171,14 @@ config.DrawWindow = function(us)
                 gConfig.showEnemyList = not gConfig.showEnemyList;
                 UpdateSettings();
             end
+            if (imgui.Checkbox('Show Distance', { gConfig.showEnemyDistance })) then
+                gConfig.showEnemyDistance = not gConfig.showEnemyDistance;
+                UpdateSettings();
+            end
+            if (imgui.Checkbox('Show HP% Text', { gConfig.showEnemyHPPText })) then
+                gConfig.showEnemyHPPText = not gConfig.showEnemyHPPText;
+                UpdateSettings();
+            end
             if (imgui.Checkbox('Show Bookends', { gConfig.showEnemyListBookends })) then
                 gConfig.showEnemyListBookends = not gConfig.showEnemyListBookends;
                 UpdateSettings();
@@ -197,6 +209,10 @@ config.DrawWindow = function(us)
             imgui.BeginChild("PartyListSettings", { 0, 300 }, true);
             if (imgui.Checkbox('Enabled', { gConfig.showPartyList })) then
                 gConfig.showPartyList = not gConfig.showPartyList;
+                UpdateSettings();
+            end
+            if (imgui.Checkbox('Show Distance', { gConfig.showPartyListDistance })) then
+                gConfig.showPartyListDistance = not gConfig.showPartyListDistance;
                 UpdateSettings();
             end
             if (imgui.Checkbox('Show Bookends', { gConfig.showPartyListBookends })) then
