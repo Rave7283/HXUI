@@ -166,7 +166,7 @@ local function DrawMember(memIdx, settings)
 		if (memInfo.inzone and memInfo.index) then
 			local entity = AshitaCore:GetMemoryManager():GetEntity()
 			local distance = math.sqrt(entity:GetDistance(memInfo.index))
-			if (distance >= 0 and distance <= 50) then
+			if (distance > 0 and distance <= 50) then
 				local percentText  = ('%.1f'):fmt(distance);
 				distanceText = ' - ' .. percentText
 			end
