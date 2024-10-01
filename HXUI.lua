@@ -155,6 +155,7 @@ T{
 	inventoryTrackerScale = 1,
 	inventoryTrackerFontOffset = 0,
 
+	partyListDistanceHighlight = 0,
 	partyListScaleX = 1,
 	partyListScaleY = 1,
 	partyListBuffScale = 1,

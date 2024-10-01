@@ -223,6 +223,11 @@ config.DrawWindow = function(us)
                 gConfig.showPartyListWhenSolo = not gConfig.showPartyListWhenSolo;
                 UpdateSettings();
             end
+            local distance = { gConfig.partyListDistanceHighlight };
+            if (imgui.SliderFloat('Distance Highlighting', distance, 0.0, 50.0, '%.1f')) then
+                gConfig.partyListDistanceHighlight = distance[1];
+                UpdateSettings();
+            end
             local scaleX = { gConfig.partyListScaleX };
             if (imgui.SliderFloat('Scale X', scaleX, 0.1, 3.0, '%.1f')) then
                 gConfig.partyListScaleX = scaleX[1];

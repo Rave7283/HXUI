@@ -162,6 +162,7 @@ local function DrawMember(memIdx, settings)
 
     -- Update the name text
     local distanceText = ''
+	local highlightDistance = false
 	if (gConfig.showPartyListDistance) then
 		if (memInfo.inzone and memInfo.index) then
 			local entity = AshitaCore:GetMemoryManager():GetEntity()
@@ -169,10 +170,19 @@ local function DrawMember(memIdx, settings)
 			if (distance > 0 and distance <= 50) then
 				local percentText  = ('%.1f'):fmt(distance);
 				distanceText = ' - ' .. percentText
+				
+				if (gConfig.partyListDistanceHighlight > 0 and distance <= gConfig.partyListDistanceHighlight) then
+					highlightDistance = true
+				end
 			end
 		end
 	end
-    memberText[memIdx].name:SetColor(0xFFFFFFFF);
+
+	if (highlightDistance) then
+		memberText[memIdx].name:SetColor(0xFF00FFFF);
+	else
+		memberText[memIdx].name:SetColor(0xFFFFFFFF);
+	end
     memberText[memIdx].name:SetPositionX(namePosX);
     memberText[memIdx].name:SetPositionY(hpStartY - nameSize.cy - settings.nameTextOffsetY);
     memberText[memIdx].name:SetText(tostring(memInfo.name) .. distanceText);
