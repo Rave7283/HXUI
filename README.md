@@ -14,3 +14,5 @@ This fork also:
 - Adds the ability to highlight party member names on Party List when within a set distance.
 - Fixes the timers for multiple debuffs as these were all wrong.
 - Adds fast cast and calculations to cast bar so that casts actually finish at 100% instead of 75% or lower. Default values are provided based on BiS for 75-era and can be adjusted.
+
+Download from releases to the right and **NOT** from Code > Download Zip.
