@@ -175,7 +175,7 @@ T{
 	castBarFontOffset = 0,
 	castBarFastCastEnabled = false,
 	castBarFastCastRDMSJ = 0.17,
-    castBarFastCast = {
+	castBarFastCast = {
 		[1] = 0.02,
 		[2] = 0.02,
 		[3] = 0.04,

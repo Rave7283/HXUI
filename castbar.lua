@@ -36,7 +36,7 @@ castbar.GetLabelText = function()
 end
 
 castbar.DrawWindow = function(settings)
-    local percent = AshitaCore:GetMemoryManager():GetCastBar():GetPercent();
+	local percent = AshitaCore:GetMemoryManager():GetCastBar():GetPercent();
 	local totalCast = 1
 
 	if (gConfig.castBarFastCastEnabled) then
