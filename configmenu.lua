@@ -413,6 +413,125 @@ config.DrawWindow = function(us)
                 gConfig.castBarFontOffset = fontOffset[1];
                 UpdateSettings();
             end
+            if (imgui.Checkbox('Enable Fast Cast / True Display', { gConfig.castBarFastCastEnabled })) then
+                gConfig.castBarFastCastEnabled = not gConfig.castBarFastCastEnabled;
+                UpdateSettings();
+            end
+            local castBarFCRDMSJ = { gConfig.castBarFastCastRDMSJ };
+            if (imgui.SliderFloat('Fast Cast - RDM SubJob', castBarFCRDMSJ, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCastRDMSJ = castBarFCRDMSJ[1];
+                UpdateSettings();
+            end
+            local castBarFC1 = { gConfig.castBarFastCast[1] };
+            if (imgui.SliderFloat('Fast Cast - WAR', castBarFC1, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[1] = castBarFC1[1];
+                UpdateSettings();
+            end
+			local castBarFC2 = { gConfig.castBarFastCast[2] };
+            if (imgui.SliderFloat('Fast Cast - MNK', castBarFC2, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[2] = castBarFC2[1];
+                UpdateSettings();
+            end
+			local castBarFC3 = { gConfig.castBarFastCast[3] };
+			if (imgui.SliderFloat('Fast Cast - WHM', castBarFC3, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[3] = castBarFC3[1];
+                UpdateSettings();
+            end
+			local castBarFC4 = { gConfig.castBarFastCast[4] };
+			if (imgui.SliderFloat('Fast Cast - BLM', castBarFC4, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[4] = castBarFC4[1];
+                UpdateSettings();
+            end
+			local castBarFC5 = { gConfig.castBarFastCast[5] };
+			if (imgui.SliderFloat('Fast Cast - RDM', castBarFC5, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[5] = castBarFC5[1];
+                UpdateSettings();
+            end
+			local castBarFC6 = { gConfig.castBarFastCast[6] };
+			if (imgui.SliderFloat('Fast Cast - THF', castBarFC6, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[6] = castBarFC6[1];
+                UpdateSettings();
+            end
+			local castBarFC7 = { gConfig.castBarFastCast[7] };
+			if (imgui.SliderFloat('Fast Cast - PLD', castBarFC7, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[7] = castBarFC7[1];
+                UpdateSettings();
+            end
+			local castBarFC8 = { gConfig.castBarFastCast[8] };
+			if (imgui.SliderFloat('Fast Cast - DRK', castBarFC8, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[8] = castBarFC8[1];
+                UpdateSettings();
+            end
+			local castBarFC9 = { gConfig.castBarFastCast[9] };
+			if (imgui.SliderFloat('Fast Cast - BST', castBarFC9, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[9] = castBarFC9[1];
+                UpdateSettings();
+            end
+			local castBarFC10 = { gConfig.castBarFastCast[10] };
+			if (imgui.SliderFloat('Fast Cast - BRD', castBarFC10, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[10] = castBarFC10[1];
+                UpdateSettings();
+            end
+			local castBarFC11 = { gConfig.castBarFastCast[11] };
+			if (imgui.SliderFloat('Fast Cast - RNG', castBarFC11, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[11] = castBarFC11[1];
+                UpdateSettings();
+            end
+			local castBarFC12 = { gConfig.castBarFastCast[12] };
+			if (imgui.SliderFloat('Fast Cast - SAM', castBarFC12, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[12] = castBarFC12[1];
+                UpdateSettings();
+            end
+			local castBarFC13 = { gConfig.castBarFastCast[13] };
+			if (imgui.SliderFloat('Fast Cast - NIN', castBarFC13, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[13] = castBarFC13[1];
+                UpdateSettings();
+            end
+			local castBarFC14 = { gConfig.castBarFastCast[14] };
+			if (imgui.SliderFloat('Fast Cast - DRG', castBarFC14, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[14] = castBarFC14[1];
+                UpdateSettings();
+            end
+			local castBarFC15 = { gConfig.castBarFastCast[15] };
+			if (imgui.SliderFloat('Fast Cast - SMN', castBarFC15, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[15] = castBarFC15[1];
+                UpdateSettings();
+            end
+			local castBarFC16 = { gConfig.castBarFastCast[16] };
+			if (imgui.SliderFloat('Fast Cast - BLU', castBarFC16, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[16] = castBarFC16[1];
+                UpdateSettings();
+            end
+			local castBarFC17 = { gConfig.castBarFastCast[17] };
+			if (imgui.SliderFloat('Fast Cast - COR', castBarFC17, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[17] = castBarFC17[1];
+                UpdateSettings();
+            end
+			local castBarFC18 = { gConfig.castBarFastCast[18] };
+			if (imgui.SliderFloat('Fast Cast - PUP', castBarFC18, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[18] = castBarFC18[1];
+                UpdateSettings();
+            end
+			local castBarFC19 = { gConfig.castBarFastCast[19] };
+			if (imgui.SliderFloat('Fast Cast - DNC', castBarFC19, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[19] = castBarFC19[1];
+                UpdateSettings();
+            end
+			local castBarFC20 = { gConfig.castBarFastCast[20] };
+			if (imgui.SliderFloat('Fast Cast - SCH', castBarFC20, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[20] = castBarFC20[1];
+                UpdateSettings();
+            end
+			local castBarFC21 = { gConfig.castBarFastCast[21] };
+			if (imgui.SliderFloat('Fast Cast - GEO', castBarFC21, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[21] = castBarFC21[1];
+                UpdateSettings();
+            end
+			local castBarFC22 = { gConfig.castBarFastCast[22] };
+			if (imgui.SliderFloat('Fast Cast - RUN', castBarFC22, 0.00, 1.00, '%.2f')) then
+                gConfig.castBarFastCast[22] = castBarFC22[1];
+                UpdateSettings();
+            end
             imgui.EndChild();
         end
         imgui.EndChild();
