@@ -60,75 +60,69 @@ enemylist.DrawWindow = function(settings)
 		local numTargets = 0;
 		for k,v in pairs(allClaimedTargets) do
 			local ent = GetEntity(k);
-			if (v ~= nil and ent ~= nil and GetIsValidMob(k) and ent.HPPercent > 0 and ent.Name ~= nil) then
-				local color = GetColorOfTargetRGBA(ent, k);
-				imgui.Dummy({0,settings.entrySpacing});
-				local rectLength = imgui.GetColumnWidth() + imgui.GetStyle().FramePadding.x;
-				
-				-- draw background to entry
-				local winX, winY  = imgui.GetCursorScreenPos();
+            if (v ~= nil and ent ~= nil and GetIsValidMob(k) and ent.HPPercent > 0 and ent.Name ~= nil) then
+				-- Obtain and prepare target information..
+				local targetNameText = ent.Name;
+				-- if (targetNameText ~= nil) then
 
-				-- Figure out sizing on the background
-				local cornerOffset = settings.bgTopPadding;
-				local _, yDist = imgui.CalcTextSize(ent.Name);
-				if (yDist > settings.barHeight) then
-					yDist = yDist + yDist;
-				else
-					yDist = yDist + settings.barHeight;
-				end
+					local color = GetColorOfTargetRGBA(ent, k);
+					imgui.Dummy({0,settings.entrySpacing});
+					local rectLength = imgui.GetColumnWidth() + imgui.GetStyle().FramePadding.x;
+					
+					-- draw background to entry
+					local winX, winY  = imgui.GetCursorScreenPos();
 
-				draw_rect({winX + cornerOffset , winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {0,0,0,bgAlpha}, bgRadius, true);
+					-- Figure out sizing on the background
+					local cornerOffset = settings.bgTopPadding;
+					local _, yDist = imgui.CalcTextSize(targetNameText);
+					if (yDist > settings.barHeight) then
+						yDist = yDist + yDist;
+					else
+						yDist = yDist + settings.barHeight;
+					end
 
-				-- Draw outlines for our target and subtarget
-				if (subTargetIndex ~= nil and k == subTargetIndex) then
-					draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {.5,.5,1,1}, bgRadius, false);
-				elseif (targetIndex ~= nil and k == targetIndex) then
-					draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {1,1,1,1}, bgRadius, false);
-				end
+					draw_rect({winX + cornerOffset , winY + cornerOffset}, {winX + rectLength, winY + yDist + settings.bgPadding}, {0,0,0,bgAlpha}, bgRadius, true);
 
-				-- Display the targets information..
-				imgui.TextColored(color, ent.Name);
-				local percentText = '';
-				local fauxX = 0;
-				if (gConfig.showEnemyDistance and gConfig.showEnemyHPPText) then
-					percentText = 'D:' .. ('%.1f'):fmt(math.sqrt(ent.Distance)) .. ' %:' .. ('%.f'):fmt(ent.HPPercent);
-					fauxX, _ = imgui.CalcTextSize('D:1000 %:100');
-				elseif (gConfig.showEnemyDistance) then
-					percentText = ('%.1f'):fmt(math.sqrt(ent.Distance));
-					fauxX, _ = imgui.CalcTextSize('1000');
-				elseif (gConfig.showEnemyHPPText) then
-					percentText = ('%.f'):fmt(ent.HPPercent);
-					fauxX, _ = imgui.CalcTextSize('100');
-				end
+					-- Draw outlines for our target and subtarget
+					if (subTargetIndex ~= nil and k == subTargetIndex) then
+						draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {.5,.5,1,1}, bgRadius, false);
+					elseif (targetIndex ~= nil and k == targetIndex) then
+						draw_rect({winX + cornerOffset, winY + cornerOffset}, {winX + rectLength - 1, winY + yDist + settings.bgPadding}, {1,1,1,1}, bgRadius, false);
+					end
 
-				local x, _ = imgui.CalcTextSize(percentText);
+					-- Display the targets information..
+					imgui.TextColored(color, targetNameText);
+					local percentText  = ('%.f'):fmt(ent.HPPercent);
+					local x, _  = imgui.CalcTextSize(percentText);
+					local fauxX, _  = imgui.CalcTextSize('100');
 
-				-- Draw buffs and debuffs
-				local buffIds = debuffHandler.GetActiveDebuffs(AshitaCore:GetMemoryManager():GetEntity():GetServerId(k));
-				if (buffIds ~= nil and #buffIds > 0) then
-					imgui.SetNextWindowPos({winStartX + settings.barWidth + settings.debuffOffsetX, winY + settings.debuffOffsetY});
-					if (imgui.Begin('EnemyDebuffs'..k, true, bit.bor(ImGuiWindowFlags_NoDecoration, ImGuiWindowFlags_AlwaysAutoResize, ImGuiWindowFlags_NoFocusOnAppearing, ImGuiWindowFlags_NoNav, ImGuiWindowFlags_NoBackground, ImGuiWindowFlags_NoSavedSettings))) then
-						imgui.PushStyleVar(ImGuiStyleVar_ItemSpacing, {1, 1});
-						DrawStatusIcons(buffIds, settings.iconSize, settings.maxIcons, 1);
-						imgui.PopStyleVar(1);
-					end 
-					imgui.End();
-				end
+					-- Draw buffs and debuffs
+					local buffIds = debuffHandler.GetActiveDebuffs(AshitaCore:GetMemoryManager():GetEntity():GetServerId(k));
+					if (buffIds ~= nil and #buffIds > 0) then
+						imgui.SetNextWindowPos({winStartX + settings.barWidth + settings.debuffOffsetX, winY + settings.debuffOffsetY});
+						if (imgui.Begin('EnemyDebuffs'..k, true, bit.bor(ImGuiWindowFlags_NoDecoration, ImGuiWindowFlags_AlwaysAutoResize, ImGuiWindowFlags_NoFocusOnAppearing, ImGuiWindowFlags_NoNav, ImGuiWindowFlags_NoBackground, ImGuiWindowFlags_NoSavedSettings))) then
+							imgui.PushStyleVar(ImGuiStyleVar_ItemSpacing, {1, 1});
+							DrawStatusIcons(buffIds, settings.iconSize, settings.maxIcons, 1);
+							imgui.PopStyleVar(1);
+						end 
+						imgui.End();
+					end
 
-				imgui.SetCursorPosX(imgui.GetCursorPosX() + fauxX - x);
-				imgui.Text(percentText);
-				imgui.SameLine();
-				imgui.SetCursorPosX(imgui.GetCursorPosX() - 3);
-				-- imgui.ProgressBar(ent.HPPercent / 100, { -1, settings.barHeight}, '');
-				progressbar.ProgressBar({{ent.HPPercent / 100, {'#e16c6c', '#fb9494'}}}, {-1, settings.barHeight}, {decorate = gConfig.showEnemyListBookends});
-				imgui.SameLine();
+					imgui.SetCursorPosX(imgui.GetCursorPosX() + fauxX - x);
+					imgui.Text(percentText);
+					imgui.SameLine();
+					imgui.SetCursorPosX(imgui.GetCursorPosX() - 3);
+					-- imgui.ProgressBar(ent.HPPercent / 100, { -1, settings.barHeight}, '');
+					progressbar.ProgressBar({{ent.HPPercent / 100, {'#e16c6c', '#fb9494'}}}, {-1, settings.barHeight}, {decorate = gConfig.showEnemyListBookends});
+					imgui.SameLine();
 
-				imgui.Separator();
+					imgui.Separator();
 
-				numTargets = numTargets + 1;
-				if (numTargets >= gConfig.maxEnemyListEntries) then
-					break;
-				end
+					numTargets = numTargets + 1;
+					if (numTargets >= gConfig.maxEnemyListEntries) then
+						break;
+					end
+				-- end
 			else
 				allClaimedTargets[k] = nil;
 			end
