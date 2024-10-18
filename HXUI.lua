@@ -195,6 +195,7 @@ T{
 	partyListBuffScale = 1,
 	partyListStatusTheme = 0, -- 0: HorizonXI-L, 1: HorizonXI-R 2: XIV1.0, 3: XIV, 4: Disabled
 	partyListTheme = 0, 
+	partyListFlashTP = false,
 	showPartyListBookends = true,
     showPartyListTitle = true,
 	showPartyListDistance = false,

@@ -235,6 +235,10 @@ config.DrawWindow = function(us)
                 gConfig.partyListPreview = not gConfig.partyListPreview;
                 UpdateSettings();
             end
+            if (imgui.Checkbox('Flash TP at 100%', { gConfig.partyListFlashTP })) then
+                gConfig.partyListFlashTP = not gConfig.partyListFlashTP;
+                UpdateSettings();
+            end
             if (imgui.Checkbox('Show Distance', { gConfig.showPartyListDistance })) then
                 gConfig.showPartyListDistance = not gConfig.showPartyListDistance;
                 UpdateSettings();

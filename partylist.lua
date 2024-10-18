@@ -351,7 +351,11 @@ local function DrawMember(memIdx, settings)
             
             if (memInfo.tp >= 1000) then
                 mainPercent = (memInfo.tp - 1000) / 2000;
-                tpOverlay = {{1, tpOverlayGradient}, math.ceil(barHeight * 2/7), 1};
+                if (gConfig.partyListFlashTP) then
+                    tpOverlay = {{1, tpOverlayGradient}, math.ceil(barHeight * 5/7), 0, { '#3ECE00', 1 }};
+                else
+                    tpOverlay = {{1, tpOverlayGradient}, math.ceil(barHeight * 2/7), 1};
+                end
             else
                 mainPercent = memInfo.tp / 1000;
             end
