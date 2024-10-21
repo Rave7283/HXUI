@@ -126,7 +126,7 @@ local function GetMemberInformation(memIdx)
         memInfo.sync = false;
         memInfo.subTargeted = false;
         memInfo.zone = 100;
-        memInfo.inzone = memIdx ~= 3;
+        memInfo.inzone = memIdx % 4 ~= 0;
         memInfo.name = 'Player ' .. (memIdx + 1);
         memInfo.leader = memIdx == 0 or memIdx == 6 or memIdx == 12;
         return memInfo
@@ -488,11 +488,11 @@ local function DrawMember(memIdx, settings)
     memberText[memIdx].mp:SetVisible(memInfo.inzone);
     memberText[memIdx].tp:SetVisible(memInfo.inzone and showTP);
 
-    if (memInfo.inzone) then
+    --if (memInfo.inzone) then
         imgui.Dummy({0, settings.entrySpacing[partyIndex] + hpSize.cy + settings.hpTextOffsetY + settings.nameTextOffsetY});
-    else
-        imgui.Dummy({0, settings.entrySpacing[partyIndex] + settings.nameTextOffsetY});
-    end
+    --else
+    --    imgui.Dummy({0, settings.entrySpacing[partyIndex] + settings.nameTextOffsetY});
+    --end
 
     local lastPlayerIndex = (partyIndex * 6) - 1;
     if (memIdx + 1 <= lastPlayerIndex) then
@@ -617,7 +617,10 @@ partyList.DrawPartyWindow = function(settings, party, partyIndex)
 
     -- if (fullMenuWidth[partyIndex] ~= nil and fullMenuHeight[partyIndex] ~= nil) then
         local bgWidth = fullMenuWidth[partyIndex] + (settings.bgPadding * 2);
-        local bgHeight = fullMenuHeight[partyIndex] + (settings.bgPadding * 2);
+        local bgHeight = fullMenuHeight[partyIndex];
+        if (partyIndex > 1) then
+            bgHeight = bgHeight + (settings.bgPadding * 2)
+        end
 
         backgroundPrim.bg.visible = backgroundPrim.bg.exists;
         backgroundPrim.bg.position_x = imguiPosX - settings.bgPadding;
