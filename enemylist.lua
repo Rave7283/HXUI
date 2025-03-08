@@ -111,9 +111,9 @@ enemylist.DrawWindow = function(settings)
 					--Distance
 					local distanceText = ('%.1f'):fmt(math.sqrt(ent.Distance));
 					
-					imgui.SetNextWindowPos({winStartX - 43, winY});
+					imgui.SetNextWindowPos({winStartX - imgui.CalcTextSize(distanceText) - 13, winY});
 					imgui.Begin('EnemyDistance'..k, true, bit.bor(ImGuiWindowFlags_NoDecoration, ImGuiWindowFlags_AlwaysAutoResize, ImGuiWindowFlags_NoFocusOnAppearing, ImGuiWindowFlags_NoNav, ImGuiWindowFlags_NoBackground, ImGuiWindowFlags_NoSavedSettings))
-					imgui.SetWindowFontScale(1.3)
+					imgui.SetWindowFontScale(1.3);
 					imgui.Text(distanceText);
 					imgui.End(); 
 					
