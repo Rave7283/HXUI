@@ -85,7 +85,7 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 60
                 elseif spell == 259 or spell == 274 or spell == 364 then -- sleep2/ga2
                     debuffs[target.Id][buffId] = now + 90
-                elseif spell == 376 or spell == 463 then -- Foe/Horde Lullaby
+                elseif spell == 376 or spell == 463 then -- foe/horde lullaby
                     debuffs[target.Id][buffId] = now + 36
                 elseif spell == 258 or spell == 362 then -- bind
                     debuffs[target.Id][buffId] = now + 60

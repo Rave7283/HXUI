@@ -10,23 +10,22 @@ local buffTable = require('bufftable');
 
 debuffTable = T{};
 
-local debuff_font_settings = 
-		T{
-			visible = true,
-			locked = true,
-			font_family = 'Consolas',
-			font_height = 8,
-			color = 0xFFFFFFFF,
-			bold = true,
-			italic = false;
-			color_outline = 0xFF000000,
-			draw_flags = 0x10,
-			background = 
-			T{
-				visible = false,
-			},
-			right_justified = false;
-		};
+local debuff_font_settings = T{
+	visible = true,
+	locked = true,
+	font_family = 'Consolas',
+	font_height = 8,
+	color = 0xFFFFFFFF,
+	bold = true,
+	italic = false;
+	color_outline = 0xFF000000,
+	draw_flags = 0x10,
+	background = 
+	T{
+		visible = false,
+	},
+	right_justified = false;
+};
 
 function draw_rect(top_left, bot_right, color, radius, fill)
     local color = imgui.GetColorU32(color);
@@ -406,24 +405,25 @@ function DrawStatusIcons(statusIds, iconSize, maxColumns, maxRows, drawBg, xOffs
                     local textPosX = startX + (i-1)*iconSize + iconSize/2 + i - 1
                     local textPosY = startY
 					
-					local textObj = debuffTable[textObjName]
-					if (textObj == nil) then
-					    textObj = fonts.new(debuff_font_settings)
-						debuffTable[textObjName] = textObj
-					end
+                    local textObj = debuffTable[textObjName]
+                    if (textObj == nil) then
+                        textObj = fonts.new(debuff_font_settings)
+						textObj:SetFontHeight(debuff_font_settings.font_height + gConfig.targetBarFontOffset)
+                        debuffTable[textObjName] = textObj
+                    end
                     textObj:SetText('')
                     if buffTimes[i] ~= nil then
-					    local timeString = tostring(buffTimes[i])
-						if (string.len(timeString) == 2) then
+                        local timeString = tostring(buffTimes[i])
+                        if (string.len(timeString) == 2) then
                             textObj:SetPositionX(textPosX + 2.5)
                             textObj:SetPositionY(textPosY)
-						elseif (string.len(timeString) == 1) then
+                        elseif (string.len(timeString) == 1) then
                             textObj:SetPositionX(textPosX + 5)
                             textObj:SetPositionY(textPosY)
-						else
+                        else
                             textObj:SetPositionX(textPosX)
                             textObj:SetPositionY(textPosY)
-						end
+                        end
                         textObj:SetText(tostring(buffTimes[i]))
                         textObj:SetVisible(true);
                     end

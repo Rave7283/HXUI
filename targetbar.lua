@@ -245,7 +245,12 @@ targetbar.DrawWindow = function(settings)
 		distText:SetPositionX(startX + settings.barWidth - settings.barHeight / 2 - settings.topTextXOffset);
 		distText:SetPositionY(startY - settings.topTextYOffset - distSize.cy);
 		distText:SetText(tostring(dist));
-		distText:SetVisible(true);
+
+		if (gConfig.showTargetDistance) then
+			distText:SetVisible(true);
+		else
+			distText:SetVisible(false);
+		end
 
 		if (isMonster or gConfig.alwaysShowHealthPercent) then
 			percentText:SetPositionX(startX + settings.barWidth - settings.barHeight / 2 - settings.bottomTextXOffset);
