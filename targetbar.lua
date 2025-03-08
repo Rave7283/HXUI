@@ -192,9 +192,9 @@ targetbar.DrawWindow = function(settings)
 
 		if (gConfig.showEnemyId and isMonster) then
 			local targetServerId = AshitaCore:GetMemoryManager():GetEntity():GetServerId(targetIndex);
-			local targetServerIdHex = string.format('0x%X', targetServerId);
+			--local targetServerIdHex = string.format('0x%X', targetServerId);
 
-			targetNameText = targetNameText .. " [".. string.sub(targetServerIdHex, -3) .."]";
+			targetNameText = targetNameText .. " [".. string.sub(targetServerId, -3) .."]";
 		end
 
 		local hpGradientStart = '#e26c6c';
@@ -238,12 +238,14 @@ targetbar.DrawWindow = function(settings)
 		nameText:SetText(targetNameText);
 		nameText:SetVisible(true);
 
+		--Draw Distance
 		local distSize = SIZE.new();
 		distText:GetTextSize(distSize);
 
 		distText:SetPositionX(startX + settings.barWidth - settings.barHeight / 2 - settings.topTextXOffset);
 		distText:SetPositionY(startY - settings.topTextYOffset - distSize.cy);
 		distText:SetText(tostring(dist));
+
 		if (gConfig.showTargetDistance) then
 			distText:SetVisible(true);
 		else
