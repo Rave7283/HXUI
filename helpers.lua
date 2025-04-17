@@ -415,13 +415,13 @@ function DrawStatusIcons(statusIds, iconSize, maxColumns, maxRows, drawBg, xOffs
                     if buffTimes[i] ~= nil then
                         local timeString = tostring(buffTimes[i])
                         if (string.len(timeString) == 2) then
-                            textObj:SetPositionX(textPosX + 2.5)
+                            textObj:SetPositionX(textPosX + 2.5 - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         elseif (string.len(timeString) == 1) then
-                            textObj:SetPositionX(textPosX + 5)
+                            textObj:SetPositionX(textPosX + 5 - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         else
-                            textObj:SetPositionX(textPosX)
+                            textObj:SetPositionX(textPosX - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         end
                         textObj:SetText(tostring(buffTimes[i]))
