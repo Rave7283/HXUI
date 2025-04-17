@@ -410,7 +410,7 @@ function DrawStatusIcons(statusIds, iconSize, maxColumns, maxRows, drawBg, xOffs
                         textObj = fonts.new(debuff_font_settings)
                         debuffTable[textObjName] = textObj
                     end
-                    textObj:SetFontHeight(debuff_font_settings.font_height + gConfig.targetBarFontOffset)
+                    textObj:SetFontHeight(debuff_font_settings.font_height + gConfig.targetBarIconFontOffset)
                     textObj:SetText('')
                     if buffTimes[i] ~= nil then
                         local timeString = tostring(buffTimes[i])
