@@ -122,7 +122,7 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 78
                 elseif spell == 422 or spell == 421 then -- elegies
                     debuffs[target.Id][buffId] = now + 216
-                elseif spell = 49 then -- perfect dodge
+                elseif spell == 49 then -- perfect dodge
                     debuffs[target.Id][buffId] = now + 30
                 else -- Handle unknown status effect @ 5 minutes
                     debuffs[target.Id][buffId] = now + 300;
