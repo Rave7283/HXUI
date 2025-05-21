@@ -1,6 +1,7 @@
 -- GNU Licensed by mousseng's XITools repository [https://github.com/mousseng/xitools]
 require('common');
 require('helpers');
+--local chat = require('chat');
 local buffTable = require('bufftable');
 
 local debuffHandler = 
@@ -10,10 +11,12 @@ T{
 };
 
 -- TO DO: Audit these messages for which ones are actually useful
-local statusOnMes = T{160, 164, 166, 186, 194, 203, 205, 230, 236, 266, 267, 268, 269, 237, 271, 272, 277, 278, 279, 280, 319, 320, 375, 412, 645, 754, 755, 804};
-local statusOffMes = T{206, 64, 159, 168, 204, 206, 321, 322, 341, 342, 343, 344, 350, 378, 531, 647, 805, 806};
+local statusOnMes = T{101, 127, 160, 164, 166, 186, 194, 203, 205, 230, 236, 266, 267, 268, 269, 237, 271, 272, 277, 278, 279, 280, 319, 320, 375, 412, 645, 754, 755, 804};
+local statusOffMes = T{64, 159, 168, 204, 206, 321, 322, 341, 342, 343, 344, 350, 378, 531, 647, 805, 806};
 local deathMes = T{6, 20, 97, 113, 406, 605, 646};
 local spellDamageMes = T{2, 252, 264, 265};
+local trackedSpells = T{45, 321};
+local additionalEffectMes = T{160};
 
 local function ApplyMessage(debuffs, action)
 
@@ -25,13 +28,21 @@ local function ApplyMessage(debuffs, action)
 
     for _, target in pairs(action.Targets) do
         for _, ability in pairs(target.Actions) do
+            --print(chat.header('Debug'):append(' Param ' .. ability.Param):append(' Message ' .. ability.Message));
+            
             -- Set up our state
             local spell = action.Param
             local message = ability.Message
+            local additionalEffect
+
+            if (ability.AdditionalEffect ~= nil and ability.AdditionalEffect.Message ~= nil) then
+                additionalEffect = ability.AdditionalEffect.Message
+                --print(chat.header('Debug'):append('Param ' .. additionalEffect.Param):append(' Message ' .. additionalEffect.Message))
+            end
+
             if (debuffs[target.Id] == nil) then
                 debuffs[target.Id] = T{};
             end
-            
             -- Bio and Dia
             if action.Type == 4 and spellDamageMes:contains(message) then
                 local expiry = nil
@@ -51,9 +62,19 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][134] = nil
                     debuffs[target.Id][135] = expiry
                 end
+            elseif trackedSpells:contains(spell) then
+                local buffId = ability.Param;
+                if (buffId == nil) then
+                    return
+                end
 
+                if spell == 321 then -- bully
+                    debuffs[target.Id][buffId] = now + 60
+                elseif spell == 45 then -- mug
+                    debuffs[target.Id][448] = now + 30
+                end
             elseif statusOnMes:contains(message) then
-                -- Regular debuffs
+                -- Regular (de)buffs
                 local buffId = ability.Param or (action.Type == 4 and buffTable.GetBuffIdBySpellId(spell) or nil);
                 if (buffId == nil) then
                     return
@@ -101,8 +122,25 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 78
                 elseif spell == 422 or spell == 421 then -- elegies
                     debuffs[target.Id][buffId] = now + 216
+                elseif spell = 49 then -- perfect dodge
+                    debuffs[target.Id][buffId] = now + 30
                 else -- Handle unknown status effect @ 5 minutes
                     debuffs[target.Id][buffId] = now + 300;
+                end
+            elseif additionalEffect ~= nil and additionalEffectMes:contains(additionalEffect) then
+                local buffId = ability.AdditionalEffect.Param;
+                if (buffId == nil) then
+                    return
+                end
+
+                if buffId == 2 then -- sleep bolt
+                    debuffs[target.Id][buffId] = now + 25
+                elseif buffId == 149 then -- defense down/acid bolt
+                    debuffs[target.Id][buffId] = now + 60
+                elseif buffId == 12 then -- gravity/mandau
+                    debuffs[target.Id][buffId] = now + 30
+                else
+                    debuffs[target.Id][buffId] = now + 30
                 end
             end
         end
@@ -121,6 +159,7 @@ local function ClearMessage(debuffs, basic)
         -- Clear the buffid that just wore off
         if (basic.param ~= nil) then
             debuffs[basic.target][basic.param] = nil;
+            --print(chat.header('Debug'):append('Param ' .. basic.Param))
         end
     end
 end
