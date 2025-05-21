@@ -183,6 +183,11 @@ config.DrawWindow = function(us)
                 gConfig.targetBarIconScale = iconScale[1];
                 UpdateSettings();
             end
+            local iconFontOffset = { gConfig.targetBarIconFontOffset };
+            if (imgui.SliderInt('Icon Font Scale', iconFontOffset, -5, 10)) then
+                gConfig.targetBarIconFontOffset = iconFontOffset[1];
+                UpdateSettings();
+            end
             imgui.EndChild();
         end
         if (imgui.CollapsingHeader("Enemy List")) then

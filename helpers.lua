@@ -408,20 +408,20 @@ function DrawStatusIcons(statusIds, iconSize, maxColumns, maxRows, drawBg, xOffs
                     local textObj = debuffTable[textObjName]
                     if (textObj == nil) then
                         textObj = fonts.new(debuff_font_settings)
-						textObj:SetFontHeight(debuff_font_settings.font_height + gConfig.targetBarFontOffset)
                         debuffTable[textObjName] = textObj
                     end
+                    textObj:SetFontHeight(debuff_font_settings.font_height + gConfig.targetBarIconFontOffset)
                     textObj:SetText('')
                     if buffTimes[i] ~= nil then
                         local timeString = tostring(buffTimes[i])
                         if (string.len(timeString) == 2) then
-                            textObj:SetPositionX(textPosX + 2.5)
+                            textObj:SetPositionX(textPosX + 2.5 - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         elseif (string.len(timeString) == 1) then
-                            textObj:SetPositionX(textPosX + 5)
+                            textObj:SetPositionX(textPosX + 5 - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         else
-                            textObj:SetPositionX(textPosX)
+                            textObj:SetPositionX(textPosX - gConfig.targetBarIconFontOffset)
                             textObj:SetPositionY(textPosY)
                         end
                         textObj:SetText(tostring(buffTimes[i]))

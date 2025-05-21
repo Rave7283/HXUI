@@ -43,8 +43,14 @@ local function ApplyMessage(debuffs, action)
             if (debuffs[target.Id] == nil) then
                 debuffs[target.Id] = T{};
             end
-            -- Bio and Dia
-            if action.Type == 4 and spellDamageMes:contains(message) then
+
+
+
+            if action.Type == 13 then
+                if spell == 1908 then -- nightmare
+                    debuffs[target.Id][2] = now + 60
+                end
+            elseif action.Type == 4 and spellDamageMes:contains(message) then -- dia / bio damage handling
                 local expiry = nil
 
                 if spell == 23 or spell == 33 or spell == 230 then

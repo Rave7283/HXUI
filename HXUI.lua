@@ -134,6 +134,7 @@ T{
 	targetBarScaleY = 1,
 	targetBarFontOffset = 0,
 	targetBarIconScale = 1,
+	targetBarIconFontOffset = 0,
 	showTargetDistance = true,
 	showTargetBarBookends = true,
 	showEnemyId = false;
