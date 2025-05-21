@@ -1,7 +1,6 @@
 -- GNU Licensed by mousseng's XITools repository [https://github.com/mousseng/xitools]
 require('common');
 require('helpers');
---local chat = require('chat');
 local buffTable = require('bufftable');
 
 local debuffHandler = 
@@ -15,7 +14,7 @@ local statusOnMes = T{101, 127, 160, 164, 166, 186, 194, 203, 205, 230, 236, 266
 local statusOffMes = T{64, 159, 168, 204, 206, 321, 322, 341, 342, 343, 344, 350, 378, 531, 647, 805, 806};
 local deathMes = T{6, 20, 97, 113, 406, 605, 646};
 local spellDamageMes = T{2, 252, 264, 265};
-local trackedSpells = T{45, 321};
+local additionalEffectJobAbilities = T{22, 45, 46, 77}; --energy drain, mug, shield bash, weapon bash
 local additionalEffectMes = T{160};
 
 local function ApplyMessage(debuffs, action)
@@ -28,7 +27,6 @@ local function ApplyMessage(debuffs, action)
 
     for _, target in pairs(action.Targets) do
         for _, ability in pairs(target.Actions) do
-            --print(chat.header('Debug'):append(' Param ' .. ability.Param):append(' Message ' .. ability.Message));
             
             -- Set up our state
             local spell = action.Param
@@ -37,14 +35,11 @@ local function ApplyMessage(debuffs, action)
 
             if (ability.AdditionalEffect ~= nil and ability.AdditionalEffect.Message ~= nil) then
                 additionalEffect = ability.AdditionalEffect.Message
-                --print(chat.header('Debug'):append('Param ' .. additionalEffect.Param):append(' Message ' .. additionalEffect.Message))
             end
 
             if (debuffs[target.Id] == nil) then
-                debuffs[target.Id] = T{};
+                debuffs[target.Id] = T{}; 
             end
-
-
 
             if action.Type == 13 then
                 if spell == 1908 then -- nightmare
@@ -67,17 +62,6 @@ local function ApplyMessage(debuffs, action)
                 elseif spell == 230 or spell == 231 or spell == 232 then
                     debuffs[target.Id][134] = nil
                     debuffs[target.Id][135] = expiry
-                end
-            elseif trackedSpells:contains(spell) then
-                local buffId = ability.Param;
-                if (buffId == nil) then
-                    return
-                end
-
-                if spell == 321 then -- bully
-                    debuffs[target.Id][buffId] = now + 60
-                elseif spell == 45 then -- mug
-                    debuffs[target.Id][448] = now + 30
                 end
             elseif statusOnMes:contains(message) then
                 -- Regular (de)buffs
@@ -128,10 +112,42 @@ local function ApplyMessage(debuffs, action)
                     debuffs[target.Id][buffId] = now + 78
                 elseif spell == 422 or spell == 421 then -- elegies
                     debuffs[target.Id][buffId] = now + 216
-                elseif spell == 49 then -- perfect dodge
+                elseif spell == 321 then -- bully
+                    debuffs[target.Id][buffId] = now + 60
+                elseif spell == 688 then -- mighty strikes
+                    debuffs[target.Id][buffId] = now + 45
+                elseif spell == 690 then -- hundred fist
+                    debuffs[target.Id][buffId] = now + 45
+                elseif spell == 691 then -- manafont
+                    debuffs[target.Id][buffId] = now + 60
+                elseif spell == 692 then -- chainspell
+                    debuffs[target.Id][buffId] = now + 60
+                elseif spell == 693 then -- perfect dodge
+                    debuffs[target.Id][buffId] = now + 30
+                elseif spell == 694 then -- invincible
+                    debuffs[target.Id][buffId] = now + 30
+                elseif spell == 695 then -- blood weapon
                     debuffs[target.Id][buffId] = now + 30
                 else -- Handle unknown status effect @ 5 minutes
                     debuffs[target.Id][buffId] = now + 300;
+                end
+            elseif action.Type == 3 and additionalEffectJobAbilities:contains(spell) then
+                if spell == 22 and message == 185 then -- energy drain
+                    if (debuffs[target.Id][13] == nil or debuffs[target.Id][13] < now) then
+                        debuffs[target.Id][13] = now + 120
+                    end
+                elseif spell == 45 and message == 129 then -- mug
+                    if (debuffs[target.Id][448] == nil or debuffs[target.Id][448] < now) then
+                        debuffs[target.Id][448] = now + 30
+                    end
+                elseif spell == 46 then -- shield bash
+                    if (debuffs[target.Id][10] == nil or debuffs[target.Id][10] < now) then
+                        debuffs[target.Id][10] = now + 6
+                    end
+                elseif spell == 77 then -- weapon bash
+                    if (debuffs[target.Id][10] == nil or debuffs[target.Id][10] < now) then
+                        debuffs[target.Id][10] = now + 6
+                    end
                 end
             elseif additionalEffect ~= nil and additionalEffectMes:contains(additionalEffect) then
                 local buffId = ability.AdditionalEffect.Param;
@@ -165,7 +181,6 @@ local function ClearMessage(debuffs, basic)
         -- Clear the buffid that just wore off
         if (basic.param ~= nil) then
             debuffs[basic.target][basic.param] = nil;
-            --print(chat.header('Debug'):append('Param ' .. basic.Param))
         end
     end
 end
