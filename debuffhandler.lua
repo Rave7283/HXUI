@@ -136,7 +136,7 @@ local function ApplyMessage(debuffs, action)
                     if (debuffs[target.Id][13] == nil or debuffs[target.Id][13] < now) then
                         debuffs[target.Id][13] = now + 120
                     end
-                elseif spell == 45 and message == 129 then -- mug
+                elseif spell == 45 then -- mug
                     if (debuffs[target.Id][448] == nil or debuffs[target.Id][448] < now) then
                         debuffs[target.Id][448] = now + 30
                     end
