@@ -95,7 +95,9 @@ local function ApplyMessage(debuffs, action)
                 elseif spell == 253 or spell == 273 or spell == 363 then -- sleep/ga
                     debuffs[target.Id][buffId] = now + 60
                 elseif spell == 259 or spell == 274 or spell == 364 then -- sleep2/ga2
-                    debuffs[target.Id][buffId] = now + 90
+                    debuffs[target.Id][2] = nil
+                    debuffs[target.Id][193] = nil 
+                    debuffs[target.Id][buffId] = now + 90 --id 19
                 elseif spell == 376 or spell == 463 then -- foe/horde lullaby
                     debuffs[target.Id][buffId] = now + 36
                 elseif spell == 258 or spell == 362 then -- bind
@@ -180,7 +182,13 @@ local function ClearMessage(debuffs, basic)
 
         -- Clear the buffid that just wore off
         if (basic.param ~= nil) then
-            debuffs[basic.target][basic.param] = nil;
+            if (basic.param == 2) then
+                debuffs[basic.target][2] = nil
+                debuffs[basic.target][193] = nil 
+                debuffs[basic.target][19] = nil
+            else
+                debuffs[basic.target][basic.param] = nil;
+            end
         end
     end
 end
