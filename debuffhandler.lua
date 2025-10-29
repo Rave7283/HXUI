@@ -27,7 +27,7 @@ local function ApplyMessage(debuffs, action)
 
     for _, target in pairs(action.Targets) do
         for _, ability in pairs(target.Actions) do
-            
+
             -- Set up our state
             local spell = action.Param
             local message = ability.Message
@@ -156,6 +156,7 @@ local function ApplyMessage(debuffs, action)
                     if (debuffs[target.Id][10] == nil or debuffs[target.Id][10] < now) then
                         debuffs[target.Id][10] = now + 6
                     end
+                --elseif spell == 82 then -- chi blast (will need this later for handling penance)
                 end
             elseif additionalEffect ~= nil and additionalEffectMes:contains(additionalEffect) then
                 local buffId = ability.AdditionalEffect.Param;
@@ -181,6 +182,12 @@ local function ClearMessage(debuffs, basic)
     -- if we're tracking a mob that dies, reset its status
     if deathMes:contains(basic.message) and debuffs[basic.target] then
         debuffs[basic.target] = nil
+    elseif (basic.message == 321) then --Custom Chi Blast dispel message
+        if (debuffs[basic.target] == nil or basic.value == nil) then
+            return
+        end
+
+        debuffs[basic.target][basic.value] = nil
     elseif statusOffMes:contains(basic.message) then
         if debuffs[basic.target] == nil then
             return
@@ -188,12 +195,12 @@ local function ClearMessage(debuffs, basic)
 
         -- Clear the buffid that just wore off
         if (basic.param ~= nil) then
-            if (basic.param == 2) then
+            if (basic.param == 2) then --Sleep/Lullaby Handling
                 debuffs[basic.target][2] = nil
                 debuffs[basic.target][193] = nil 
                 debuffs[basic.target][19] = nil
             else
-                debuffs[basic.target][basic.param] = nil;
+                debuffs[basic.target][basic.param] = nil
             end
         end
     end
